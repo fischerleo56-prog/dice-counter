@@ -54,15 +54,33 @@ c.textContent=(v>0?'+':'')+v;
 if(v>0){c.style.color='#39d98a';}
 else if(v<0){c.style.color='#ff5f6d';}
 else{c.style.color='#ffd54a';}
-set(ref(db, "garamas"), n);
+
 }
-function fly(t,c){let d=document.createElement('div');d.className='fly';d.style.color=c;d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),800);}function chg(v){if(!isNaN(v)){n+=v;render();fly((v>0?'+':'')+v,v>0?'#39d98a':'#ff5f6d');}}
+function fly(t,c){let d=document.createElement('div');d.className='fly';d.style.color=c;d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),800);}function chg(v){
+    if(!isNaN(v)){
+        n += v;
+
+        set(ref(db, "garamas"), n);
+
+        fly(
+            (v > 0 ? "+" : "") + v,
+            v > 0 ? "#39d98a" : "#ff5f6d"
+        );
+    }
+}
 onValue(ref(db, "garamas"), (snapshot) => {
   const value = snapshot.val();
 
   if (value !== null) {
     n = value;
-    render();
+    onValue(ref(db, "garamas"), (snapshot) => {
+    const value = snapshot.val();
+
+    if (value !== null) {
+        n = value;
+        render();
+    }
+});
   }
 });
 </script></body></html>
