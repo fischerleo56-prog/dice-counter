@@ -46,7 +46,23 @@ input{width:45%;padding:14px;background:#222;border:1px solid #555;color:#fff;bo
 <div><input id='v1' placeholder='- amount'><input id='v2' placeholder='+ amount'></div>
 <div class='actions'><button class='sub' onclick='chg(-parseFloat(v1.value||0))'>SUBTRACT</button><button class='add' onclick='chg(parseFloat(v2.value||0))'>ADD</button></div>
 </div>
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD1JdLLVrWd1DnXyzWNmf8iPVjPgXbM1oM",
+  authDomain: "garamas-counter.firebaseapp.com",
+  databaseURL: "https://garamas-counter-default-rtdb.firebaseio.com",
+  projectId: "garamas-counter",
+  storageBucket: "garamas-counter.firebasestorage.app",
+  messagingSenderId: "279660449676",
+  appId: "1:279660449676:web:3b55796017882bfb0290a9",
+  measurementId: "G-5H4JYVLK66"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 let n = 0;
 function render(){
 let v=Math.round(n*100)/100;
