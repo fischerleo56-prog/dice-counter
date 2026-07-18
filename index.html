@@ -1,27 +1,4 @@
 <!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyD1JdLLVrWd1DnXyzWNmf8iPVjPgXbM1oM",
-  authDomain: "garamas-counter.firebaseapp.com",
-  databaseURL: "https://garamas-counter-default-rtdb.firebaseio.com",
-  projectId: "garamas-counter",
-  storageBucket: "garamas-counter.firebasestorage.app",
-  messagingSenderId: "279660449676",
-  appId: "1:279660449676:web:3b55796017882bfb0290a9",
-  measurementId: "G-5H4JYVLK66"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-window.db = db;
-window.ref = ref;
-window.set = set;
-window.onValue = onValue;
-</script>
 <style>
 html,body{background:transparent;color:#fff;font-family:Arial;margin:0;display:flex;justify-content:center}
 .card{background:transparent;max-width:420px;width:100%;padding:20px}
@@ -84,26 +61,10 @@ function fly(t,c){let d=document.createElement('div');d.className='fly';d.style.
         );
     }
 }
+window.chg = chg;
 onValue(ref(db, "garamas"), (snapshot) => {
   const value = snapshot.val();
-
-  if (value !== null) {
-    n = value;
-    onValue(ref(db, "garamas"), (snapshot) => {
-    const value = snapshot.val();
-
-    if (value !== null) {
-        n = value;
-        onValue(ref(db, "garamas"), (snapshot) => {
-    const value = snapshot.val();
-
-    if (value !== null) {
-        n = value;
-        render();
-    }
-});
-    }
-});
-  }
+  n = value !== null ? Number(value) : 0;
+  render();
 });
 </script></body></html>
