@@ -145,8 +145,12 @@ const overlayLink = document.getElementById('overlayLink');
 const controlLink = document.getElementById('controlLink');
 const roomIdEl = document.getElementById('roomId');
 let n = 0;
-let roomId = new URLSearchParams(location.search).get('room');
-const isOverlay = new URLSearchParams(location.search).get('overlay') === '1';
+const params = new URLSearchParams(location.search);
+const isOverlay = params.get('overlay') === '1';
+const savedRoomId = localStorage.getItem('liveCounterRoomId');
+let roomId = params.get('room') || savedRoomId;
+if (roomId) localStorage.setItem('liveCounterRoomId', roomId);
+ = new URLSearchParams(location.search).get('overlay') === '1';
 
 function randomRoomId() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
@@ -188,6 +192,7 @@ async function createRoom() {
   try {
     const id = randomRoomId();
     await set(ref(db, 'rooms/' + id), { counter: 0, createdAt: Date.now() });
+    localStorage.setItem('liveCounterRoomId', id);
     location.href = '?room=' + encodeURIComponent(id);
   } catch (e) {
     console.error(e);
@@ -198,6 +203,7 @@ window.createRoom = createRoom;
 function joinRoom() {
   const id = roomInput.value.trim();
   if (!id) return;
+  localStorage.setItem('liveCounterRoomId', id);
   location.href = '?room=' + encodeURIComponent(id);
 }
 window.joinRoom = joinRoom;
