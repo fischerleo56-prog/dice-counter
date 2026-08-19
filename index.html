@@ -16,6 +16,7 @@
 <style>
 *{box-sizing:border-box}
 html,body{background:transparent;color:#fff;font-family:Arial,sans-serif;margin:0;min-height:100%;}
+html.overlay-mode,body.overlay-mode{background-image:none!important;background-color:transparent!important;}
 body{display:flex;justify-content:center;align-items:flex-start}
 .card{width:min(420px,100%);padding:20px}
 .top{width:calc(100% - 24px);height:132px;min-height:132px;background:#111827;border:2px solid #4d7cff;box-shadow:0 0 30px rgba(77,124,255,.45);border-radius:20px;padding:20px;text-align:center;display:flex;align-items:center;justify-content:center}.top .row{width:100%;height:100%}
@@ -209,6 +210,10 @@ const dragonsBtn = document.getElementById('dragonsBtn');
 
 const params = new URLSearchParams(location.search);
 const isOverlay = params.get('overlay') === '1';
+if (isOverlay) {
+  document.documentElement.classList.add('overlay-mode');
+  document.body.classList.add('overlay-mode');
+}
 const savedRoomId = localStorage.getItem('liveCounterRoomId');
 let roomId = params.get('room') || savedRoomId;
 let selectedCounter = params.get('counter') === 'dragons' ? 'dragons' : (localStorage.getItem('liveCounterType') === 'dragons' ? 'dragons' : 'garamas');
