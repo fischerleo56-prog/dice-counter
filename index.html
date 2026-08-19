@@ -5,8 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dice Counter – Kostenloser Live Counter für TikTok</title>
 <meta name="description" content="Dice Counter – kostenloser Live Counter für TikTok. Erstelle deinen eigenen Counter, teile ihn und nutze ihn direkt in TikTok Studio.">
-<meta name="keywords" content="dice counter, counter, live counter, TikTok counter, TikTok Studio counter, kostenloser counter">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#111827">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dice Counter – Kostenloser Live Counter">
+<meta property="og:description" content="Kostenloser Live Counter für TikTok LIVE, Streams und TikTok Studio. Erstelle einen Counter-Raum und teile ihn direkt.">
+<meta property="og:url" content="https://dice-counter.pages.dev/">
+<meta property="og:site_name" content="Dice Counter">
 <link rel="canonical" href="https://dice-counter.pages.dev/">
 <style>
 *{box-sizing:border-box}
@@ -23,9 +28,6 @@ body{display:flex;justify-content:center;align-items:flex-start}
 .setup h2{margin:0 0 8px;font-size:28px}
 .setup p{color:#aaa;margin:0 0 18px}
 .create{width:100%;background:#4d7cff;color:#fff;border:0;border-radius:14px;padding:16px;font-size:19px;font-weight:bold;cursor:pointer}
-.join{display:flex;gap:8px;margin-top:12px}
-.join input{flex:1;width:auto}
-.joinBtn{background:#252f45;color:#fff;border:1px solid #4d7cff;border-radius:10px;padding:0 18px;font-weight:bold;cursor:pointer}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
 button{padding:18px;border:none;border-radius:16px;font-size:22px;color:#fff;cursor:pointer;box-shadow:0 0 18px rgba(255,255,255,.08);transition:.2s}
 button:hover{transform:scale(1.03)}
@@ -52,10 +54,27 @@ input:focus{border-color:#4d7cff;box-shadow:0 0 0 2px rgba(77,124,255,.15)}
 .overlayTop .row{gap:16px}
 .overlayTop .logo{width:120px}
 .overlayTop .count{font-size:64px;text-shadow:0 0 18px rgba(0,0,0,.15)}
+.seo-info{margin-top:16px;background:#0c1220;border:1px solid #263552;border-radius:16px;padding:18px;text-align:left}
+.seo-info h2{margin:0 0 8px;font-size:20px;color:#fff}
+.seo-info h3{margin:16px 0 6px;font-size:15px;color:#fff}
+.seo-info p{margin:0;color:#aaa;font-size:13px;line-height:1.55}
+.seo-info ul{margin:8px 0 0;padding-left:18px;color:#aaa;font-size:13px;line-height:1.55}
 .hidden{display:none!important}
 @media(max-width:430px){.card{padding:12px}.top{padding:16px}.grid{gap:8px}button{padding:15px 8px;font-size:20px}}
 </style>
     <meta name="google-site-verification" content="Ax_6xf2l0NXuXujBYAILdl-E3RoQdvSUd76i837jwJg" />
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Dice Counter",
+  "url":"https://dice-counter.pages.dev/",
+  "description":"Kostenloser Live Counter für TikTok LIVE, Streams und TikTok Studio.",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Web"
+}
+</script>
 </head>
 <body>
 <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">Dice Counter – Live Counter für TikTok</h1>
@@ -74,10 +93,6 @@ input:focus{border-color:#4d7cff;box-shadow:0 0 0 2px rgba(77,124,255,.15)}
     <h2>LIVE COUNTER</h2>
     <p>Erstelle deinen eigenen Counter-Raum.</p>
     <button class="create" onclick="createRoom()">CREATE ROOM</button>
-    <div class="join">
-      <input id="roomInput" placeholder="Room-ID eingeben" autocomplete="off">
-      <button class="joinBtn" onclick="joinRoom()">JOIN</button>
-    </div>
   </div>
 
   <div id="controls" class="hidden">
@@ -108,6 +123,17 @@ input:focus{border-color:#4d7cff;box-shadow:0 0 0 2px rgba(77,124,255,.15)}
     </div>
   </div>
 </div>
+
+  <section class="seo-info" id="seoInfo">
+    <h2>Dice Counter – kostenloser Live Counter</h2>
+    <p>Dice Counter ist ein kostenloser Live Counter für TikTok LIVE, Streams und TikTok Studio. Erstelle deinen eigenen Counter-Raum und nutze ihn direkt im Browser.</p>
+    <h3>Wofür kann ich den Counter nutzen?</h3>
+    <ul>
+      <li>Live-Counter für TikTok LIVE und Streams</li>
+      <li>Counter direkt in TikTok Studio als Overlay verwenden</li>
+      <li>Einen eigenen Counter-Raum mit einem teilbaren Link erstellen</li>
+    </ul>
+  </section>
 
 <div id="overlay" class="overlay hidden">
   <div class="top overlayTop">
@@ -146,7 +172,6 @@ const overlayCount = document.getElementById('overlayCount');
 const overlayLogo = document.getElementById('overlayLogo');
 const mainLogo = document.querySelector('.top .logo');
 if (overlayLogo && mainLogo) overlayLogo.src = mainLogo.src;
-const roomInput = document.getElementById('roomInput');
 const overlayLink = document.getElementById('overlayLink');
 const controlLink = document.getElementById('controlLink');
 const roomIdEl = document.getElementById('roomId');
@@ -205,13 +230,6 @@ async function createRoom() {
   }
 }
 window.createRoom = createRoom;
-function joinRoom() {
-  const id = roomInput.value.trim();
-  if (!id) return;
-  localStorage.setItem('liveCounterRoomId', id);
-  location.href = '?room=' + encodeURIComponent(id);
-}
-window.joinRoom = joinRoom;
 async function copyLink(type) {
   const url = type === 'overlay'
     ? location.origin + location.pathname + '?room=' + encodeURIComponent(roomId) + '&overlay=1'
@@ -223,6 +241,8 @@ async function copyLink(type) {
 window.copyLink = copyLink;
 function setupRoom() {
   setup.classList.add('hidden');
+  const seoInfo = document.getElementById('seoInfo');
+  if (seoInfo) seoInfo.classList.add('hidden');
   if (isOverlay) {
     document.querySelector('.card').classList.add('hidden');
     overlay.classList.remove('hidden');
