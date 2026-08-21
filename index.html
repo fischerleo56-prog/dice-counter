@@ -45,7 +45,11 @@ input:focus{border-color:#4d7cff;box-shadow:0 0 0 2px rgba(77,124,255,.15)}
 .amounts input{flex:1;width:0}
 .actions{display:flex;gap:10px;margin-top:10px}
 .sub{background:#ff6b8a;flex:1} .add{background:#39d98a;flex:1;color:#111}
-.links{margin-top:16px;background:#0c1220;border:1px solid #263552;border-radius:14px;padding:12px;text-align:left}
+.links-toggle{width:100%;margin-top:16px;background:#0c1220;color:#fff;border:1px solid #263552;border-radius:14px;padding:12px;font-size:14px;font-weight:bold;cursor:pointer;box-shadow:none}
+.links-toggle:hover{transform:none;background:#131d31}
+.links{margin-top:8px;background:#0c1220;border:1px solid #263552;border-radius:14px;padding:12px;text-align:left}
+.disclaimer{margin-top:12px;padding:10px 12px;background:#171d2b;border:1px solid #34415d;border-radius:10px;color:#9fa9bd;font-size:11px;line-height:1.45}
+.links-panel.hidden{display:none!important}
 .linkRow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px}
 .linkRow:first-child{margin-top:0}
 .links span{font-size:11px;color:#aaa;font-weight:bold}
@@ -143,12 +147,15 @@ html, body {
       <button class="sub" onclick="chg(-parseFloat(document.getElementById('v1').value||0))">SUBTRACT</button>
       <button class="add" onclick="chg(parseFloat(document.getElementById('v2').value||0))">ADD</button>
     </div>
-    <div class="links">
-      <div class="linkRow"><span>STREAM / TIKTOK STUDIO</span><button class="copy" onclick="copyLink('overlay')">COPY</button></div>
-      <code id="overlayLink"></code>
-      <div class="linkRow"><span>CONTROL LINK</span><button class="copy" onclick="copyLink('control')">COPY</button></div>
-      <code id="controlLink"></code>
-      <small>Room: <b id="roomId"></b></small>
+    <button class="links-toggle" id="linksToggle" onclick="toggleLinks()">Show Links &amp; Controls ▾</button>
+    <div class="links-panel hidden" id="linksPanel">
+      <div class="links">
+        <div class="linkRow"><span>STREAM / TIKTOK STUDIO</span><button class="copy" onclick="copyLink('overlay')">COPY</button></div>
+        <code id="overlayLink"></code>
+        <div class="linkRow"><span>CONTROL LINK</span><button class="copy" onclick="copyLink('control')">COPY</button></div>
+        <code id="controlLink"></code>
+        <div class="disclaimer">Please do not pass the room on to others, as they could then change settings in your counter!</div>
+      </div>
     </div>
   </div>
 </div>
@@ -204,7 +211,6 @@ const overlayLabel = document.getElementById('overlayLabel');
 const mainLogo = document.querySelector('.top .logo');
 const overlayLink = document.getElementById('overlayLink');
 const controlLink = document.getElementById('controlLink');
-const roomIdEl = document.getElementById('roomId');
 const counterName = document.getElementById('counterName');
 const garamasBtn = document.getElementById('garamasBtn');
 const dragonsBtn = document.getElementById('dragonsBtn');
@@ -365,6 +371,15 @@ async function copyLink(type) {
 }
 window.copyLink = copyLink;
 
+function toggleLinks() {
+  const panel = document.getElementById('linksPanel');
+  const button = document.getElementById('linksToggle');
+  if (!panel || !button) return;
+  const isHidden = panel.classList.toggle('hidden');
+  button.innerHTML = isHidden ? 'Show Links &amp; Controls ▾' : 'Hide Links &amp; Controls ▴';
+}
+window.toggleLinks = toggleLinks;
+
 function setupRoom() {
   setup.classList.add('hidden');
   const seoInfo = document.getElementById('seoInfo');
@@ -377,7 +392,6 @@ function setupRoom() {
     listenToSelectedCounter();
   } else {
     controls.classList.remove('hidden');
-    roomIdEl.textContent = roomId;
     updateSwitchUI();
     render();
     overlayLink.textContent = location.origin + location.pathname + '?room=' + encodeURIComponent(roomId) + '&overlay=1&counter=' + selectedCounter;
